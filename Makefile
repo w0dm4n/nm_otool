@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: frmarinh <mblet@student.42.fr>             +#+  +:+       +#+         #
+#    By: frmarinh <frmarinh@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/20 17:57:50 by frmarinh          #+#    #+#              #
-#    Updated: 2017/02/27 19:42:09 by frmarinh         ###   ########.fr        #
+#    Updated: 2017/02/28 18:25:09 by frmarinh         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,8 @@ LENGTHNAME	=	`printf "%s" $(NAMEBASE) | wc -c`
 MAX_COLS	=	$$(echo "$$(tput cols)-24-$(LENGTHNAME)"|bc)
 
 CC			=	gcc
-FLAGS		=	-Wall -Wextra -Werror -O3
+#FLAGS		=	-Wall -Wextra -Werror -O3
+FLAGS       =
 FLAGS_O		=	
 
 SRCDIR_OTOOL		=	srcs/otool/
