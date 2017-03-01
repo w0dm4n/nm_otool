@@ -6,7 +6,7 @@
 #    By: frmarinh <frmarinh@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/20 17:57:50 by frmarinh          #+#    #+#              #
-#    Updated: 2017/02/28 18:25:09 by frmarinh         ###   ########.fr        #
+#    Updated: 2017/03/01 19:12:38 by frmarinh         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,9 @@ LIBFT_LIB			=	$(LIBFT_DIR)libft.a
 
 SRCBASE_OTOOL	=	\
 					ft_otool.c                              \
+					mach_header.c							\
+					swap.c                                  \
+					read_x64.c								\
 
 SRCBASE_NM		=	\
 					ft_nm.c                                 \

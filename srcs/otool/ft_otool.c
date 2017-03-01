@@ -84,7 +84,7 @@ size_t	check_count(size_t count, void *ptr)
 	return (count);
 }
 
-static void		*ft_mmap(int fd, size_t size)
+void		*ft_mmap(int fd, size_t size)
 {
 	return (mmap(0, size, PROT_READ, \
 		MAP_SHARED, fd, 0));
@@ -138,7 +138,10 @@ t_file			*get_file_structure(char *name)
 
 static void		get_content(char *name)
 {
-	struct s_file	*file;
+	struct s_file			*file;
+	struct mach_header_64	*header_64;
+	struct mach_header		*header_32;
+	uint32_t				magic;
 
 	if (!(file  = get_file_structure(name)))
 	{
@@ -150,7 +153,18 @@ static void		get_content(char *name)
 		print_usage();
 		return ;
 	}
-	read_data(file);
+	if (is_x64(file))
+	{
+		header_64 = get_x64(file);
+		check_swap_x64(header_64);
+		read_x64(header_64, file);
+	}
+	else
+	{
+		header_32 = get_x32(file);
+		check_swap_x32(header_32);
+	}
+	//read_data(file);
 }
 
 int				main(int argc, char **argv)
