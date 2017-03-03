@@ -28,23 +28,23 @@ void	print_ascii(int size, void *ptr)
 	}
 }
 
-char	*get_and_print_first(char *tmp, void *ptr)
+char	*set_lowercase(char *string)
 {
-	tmp = ft_itoabase_uint((*(char*)ptr) >> 4, "0123456789ABCDEF");
-	if (tmp != NULL)
+	int i;
+
+	i = 0;
+	while (string[i])
 	{
-		ft_putchar(tmp[ft_strlen(tmp) - 1]);
-		free(tmp);
+		if (string[i] >= 'A' && string[i] <= 'Z')
+			string[i] += 32;
+		i++;
 	}
-	else
-		ft_putstr("0");
-	return (tmp);
+	return (string);
 }
 
-char	*get_and_print_second(char *tmp, void *ptr)
+void	get_and_print_first(char *tmp, char ptr)
 {
-	tmp = ft_itoabase_uint((char)(*(char*)ptr) - \
-		(((*(char*)ptr) >> 4) << 4), "0123456789ABCDEF");
+	tmp = ft_itoabase_uint((ptr) >> 4, "0123456789abcdef");
 	if (tmp != NULL)
 	{
 		ft_putchar(tmp[ft_strlen(tmp) - 1]);
@@ -52,7 +52,19 @@ char	*get_and_print_second(char *tmp, void *ptr)
 	}
 	else
 		ft_putstr("0");
-	return (tmp);
+}
+
+void	get_and_print_second(char *tmp, char ptr)
+{
+	tmp = ft_itoabase_uint(ptr - \
+		((ptr >> 4) << 4), "0123456789abcdef");
+	if (tmp != NULL)
+	{
+		ft_putchar(tmp[ft_strlen(tmp) - 1]);
+		free(tmp);
+	}
+	else
+		ft_putstr("0");
 }
 
 int		print_end_hexa(size_t count, void *ptr, int i)
@@ -97,9 +109,14 @@ static void		print_usage(void)
 	ft_putstr("Usage : ./ft_otool <object file> (print the text section)\n");
 }
 
+static void		print_not_object(void)
+{
+	ft_putstr("./ft_otool: The file was not recognized as a valid object file.\n");
+}
+
 static void		read_data(t_file	*file)
 {
-	char	*buffer;
+	/*char	*buffer;
 	char	*tmp;
 	int		i;
 	int		count;
@@ -120,6 +137,7 @@ static void		read_data(t_file	*file)
 		
 	}
 	i = print_end_hexa(count, buffer, i);
+	*/
 }
 
 t_file			*get_file_structure(char *name)
@@ -135,6 +153,7 @@ t_file			*get_file_structure(char *name)
 		return (NULL);
 	return (file);
 }
+
 
 static void		get_content(char *name)
 {
@@ -153,24 +172,45 @@ static void		get_content(char *name)
 		print_usage();
 		return ;
 	}
+	if (!S_ISREG(file->stat_data->st_mode))
+	{
+		print_not_object();
+		return;
+	}
 	if (is_x64(file))
 	{
 		header_64 = get_x64(file);
-		check_swap_x64(header_64);
-		read_x64(header_64, file);
+		if (header_64->filetype < 3 && header_64->filetype > 0)
+		{
+			check_swap_x64(header_64);
+			read_x64(header_64, file);
+		}
+		else
+			print_not_object();
 	}
 	else
 	{
 		header_32 = get_x32(file);
-		check_swap_x32(header_32);
+		if (header_32->filetype < 3 && header_32->filetype > 0)
+		{
+			check_swap_x32(header_32);
+			read_x32(header_32, file);
+		}
+		else
+			print_not_object();
 	}
-	//read_data(file);
 }
 
 int				main(int argc, char **argv)
 {
-	if (argc == 2)
-		get_content(argv[1]);
+	int i;
+
+	i = 1;
+	if (argc >= 2)
+	{
+		while (argv[i])
+			get_content(argv[i++]);
+	}
 	else
 		print_usage();
 	return (0);

@@ -37,5 +37,12 @@ struct mach_header		*get_x32(t_file *file);
 void					check_swap_x64(struct mach_header_64 *header);
 void					check_swap_x32(struct mach_header *header);
 void					read_x64(struct mach_header_64 *header, t_file *file);
+void					read_x32(struct mach_header *header, t_file *file);
+void					get_and_print_first(char *tmp, char ptr);
+void					get_and_print_second(char *tmp, char ptr);
+
+void					print_text_section(int size, char *ptr, uint64_t addr);
+void					*get_text_section(int index, char *ptr);
+void					*get_ptr(t_file *file);
 
 #endif

@@ -18,6 +18,86 @@ void	*get_ptr(t_file *file)
 	return (ft_mmap(file->fd, file->stat_data->st_size));
 }
 
+void	*get_text_section(int index, char *ptr)
+{
+	return (ptr + index);
+}
+
+void	print_addr(int val)
+{
+	char	*tmp;
+	size_t	i;
+
+	i = 8;
+	tmp = ft_itoabase_uint(val, "0123456789abcdef");
+	if (tmp != NULL && ft_strlen(tmp) > 0)
+	{
+		ft_putstr("00000001");
+		while (i > ft_strlen(tmp))
+		{
+			ft_putchar('0');
+			i--;
+		}
+		ft_putstr(tmp);
+		free(tmp);
+	}
+	else
+	{
+		ft_putstr("00000001");
+		ft_putstr("00000000");
+	}
+}
+
+void	print_text_section(int size, char *ptr, uint64_t addr)
+{
+	int		i;
+	int		count;
+	char	*tmp;
+	char	*str;
+
+	i = 0;
+	count = 0;
+	str = (char*)ptr;
+	while (i < size)
+	{
+		if (count == 0)
+		{
+			print_addr((int)addr + i);
+			ft_putstr("\t");
+		}
+		count++;
+		get_and_print_first(tmp, str[i]);
+		get_and_print_second(tmp, str[i]);
+		ft_putstr(" ");
+		if (count == 16)
+		{
+			ft_putstr("\n");
+			count = 0;
+		}
+		i++;
+	}
+}
+
+void	text_section_x64(struct segment_command_64 *segment, \
+	t_file *file, struct section_64 *section)
+{
+	void	*ptr;
+	int		i;
+	int		count;
+
+	i = 0;
+	count = 0;
+	if(!(ptr = ft_mmap(file->fd, file->stat_data->st_size)))
+		return ;
+	ft_putstr(file->file_name);
+	ft_putstr("\n");
+	ft_putstr("Contents of (__TEXT,__text) section\n");
+	print_text_section(section->size, get_text_section(section->offset, ptr), \
+		section->addr);
+	ft_putstr("\n");
+	
+}
+
 void	read_x64(struct mach_header_64 *header, t_file *file)
 {
 	int							i;
@@ -37,11 +117,8 @@ void	read_x64(struct mach_header_64 *header, t_file *file)
 		{
 			segment = (struct segment_command_64*)ptr;
 			section = ptr + sizeof(struct segment_command_64);
-			if (ft_strcmp(segment->segname, "__TEXT") == 0)
-			{
-				printf("%p segname: %s, cmdsize: %d, filesize: %llu, addr: %llx, offset: %llu\n", ptr, segment->segname, cmd->cmdsize, \
-				 segment->filesize, section->addr, section->offset);
-			}
+			if (ft_strcmp(section->segname, "__TEXT") == 0)
+				text_section_x64(segment, file, section);
 		}
 		ptr += cmd->cmdsize;
 		i++;
