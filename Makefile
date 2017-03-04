@@ -6,7 +6,7 @@
 #    By: frmarinh <frmarinh@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/20 17:57:50 by frmarinh          #+#    #+#              #
-#    Updated: 2017/03/01 19:12:38 by frmarinh         ###   ########.fr        #
+#    Updated: 2017/03/04 20:06:39 by frmarinh         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,6 @@ MAX_COLS	=	$$(echo "$$(tput cols)-24-$(LENGTHNAME)"|bc)
 
 CC			=	gcc
 FLAGS		=	-Wall -Wextra -Werror -O3
-#FLAGS       =
 FLAGS_O		=	
 
 SRCDIR_OTOOL		=	srcs/otool/

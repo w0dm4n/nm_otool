@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "ft_nm_otool.h"
+#include <string.h>
 
 t_custom_nlist		*alloc_custom(void)
 {
@@ -101,7 +102,7 @@ void	range_customs_by_ascii(void)
 		tmp_2 = tmp->next;
 		while (tmp_2)
 		{
-			if (tmp->content[1] > tmp_2->content[1])
+			if (ft_strcmp(tmp->content, tmp_2->content) > 0)
 				replace_custom_data(tmp, tmp_2);
 			tmp_2 = tmp_2->next;
 		}
