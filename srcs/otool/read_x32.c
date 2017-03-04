@@ -21,15 +21,14 @@ void	text_section_x32(struct segment_command *segment, \
 
 	i = 0;
 	count = 0;
-	if(!(ptr = ft_mmap(file->fd, section->offset)))
+	if (!(ptr = ft_mmap(file->fd, section->offset)))
 		return ;
 	ft_putstr(file->file_name);
 	ft_putstr("\n");
 	ft_putstr("Contents of (__TEXT,__text) section\n");
 	print_text_section(section->size, get_text_section(section->offset, ptr), \
-		section->addr);
+		section->addr, file);
 	ft_putstr("\n");
-	
 }
 
 void	read_x32(struct mach_header *header, t_file *file)

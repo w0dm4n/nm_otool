@@ -11,19 +11,17 @@
 /* ************************************************************************** */
 
 #include "ft_nm_otool.h"
-#include <stdio.h>
 
-void	*get_ptr(t_file *file)
+void	print_by_type(int type)
 {
-	return (ft_mmap(file->fd, file->stat_data->st_size));
+	ft_putstr("0000000");
+	if (type == 1)
+		ft_putstr("0");
+	else if (type == 2)
+		ft_putstr("1");
 }
 
-void	*get_text_section(int index, char *ptr)
-{
-	return (ptr + index);
-}
-
-void	print_addr(int val)
+void	print_addr(int val, int file_type)
 {
 	char	*tmp;
 	size_t	i;
@@ -32,7 +30,7 @@ void	print_addr(int val)
 	tmp = ft_itoabase_uint(val, "0123456789abcdef");
 	if (tmp != NULL && ft_strlen(tmp) > 0)
 	{
-		ft_putstr("00000001");
+		print_by_type(file_type);
 		while (i > ft_strlen(tmp))
 		{
 			ft_putchar('0');
@@ -43,26 +41,26 @@ void	print_addr(int val)
 	}
 	else
 	{
-		ft_putstr("00000001");
+		print_by_type(file_type);
 		ft_putstr("00000000");
 	}
 }
 
-void	print_text_section(int size, char *ptr, uint64_t addr)
+void	print_text_section(int size, char *ptr, uint64_t addr, t_file *file)
 {
 	int		i;
 	int		count;
 	char	*tmp;
 	char	*str;
 
-	i = 0;
+	i = -1;
 	count = 0;
 	str = (char*)ptr;
-	while (i < size)
+	while (++i < size)
 	{
 		if (count == 0)
 		{
-			print_addr((int)addr + i);
+			print_addr((int)addr + i, file->filetype);
 			ft_putstr("\t");
 		}
 		count++;
@@ -74,7 +72,6 @@ void	print_text_section(int size, char *ptr, uint64_t addr)
 			ft_putstr("\n");
 			count = 0;
 		}
-		i++;
 	}
 }
 
@@ -87,15 +84,14 @@ void	text_section_x64(struct segment_command_64 *segment, \
 
 	i = 0;
 	count = 0;
-	if(!(ptr = ft_mmap(file->fd, file->stat_data->st_size)))
+	if (!(ptr = ft_mmap(file->fd, file->stat_data->st_size)))
 		return ;
 	ft_putstr(file->file_name);
 	ft_putstr("\n");
 	ft_putstr("Contents of (__TEXT,__text) section\n");
 	print_text_section(section->size, get_text_section(section->offset, ptr), \
-		section->addr);
+		section->addr, file);
 	ft_putstr("\n");
-	
 }
 
 void	read_x64(struct mach_header_64 *header, t_file *file)

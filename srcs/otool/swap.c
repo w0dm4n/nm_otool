@@ -17,14 +17,6 @@ static int				should_swap_bytes(uint32_t magic)
 	return (magic == MH_CIGAM || magic == MH_CIGAM_64);
 }
 
-uint32_t				swap_int32(uint32_t x)
-{
-	return ((uint32_t)((((uint32_t)(x) & 0xff000000) >> 24) | \
-		(((uint32_t)(x) & 0x00ff0000) >> 8) | \
-		(((uint32_t)(x) & 0x0000ff00) << 8) | \
-		(((uint32_t)(x) & 0x000000ff) << 24)));
-}
-
 void					swap_mach_header_x32(struct mach_header *mh)
 {
 	mh->magic = swap_int32(mh->magic);

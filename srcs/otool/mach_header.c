@@ -21,9 +21,9 @@ int						is_x64(t_file *file)
 {
 	struct mach_header	*mach_header;
 
-	if(!(mach_header = (struct mach_header*)ft_mmap(file->fd, \
+	if (!(mach_header = (struct mach_header*)ft_mmap(file->fd, \
 		sizeof(struct mach_header))))
-		return -1;
+		return (-1);
 	return (is_magic_64(mach_header->magic));
 }
 
@@ -31,7 +31,7 @@ struct mach_header_64	*get_x64(t_file *file)
 {
 	struct mach_header_64	*mach_header_64;
 
-	if(!(mach_header_64 = (struct mach_header_64*)ft_mmap(file->fd, \
+	if (!(mach_header_64 = (struct mach_header_64*)ft_mmap(file->fd, \
 		sizeof(struct mach_header_64))))
 		return (NULL);
 	return (mach_header_64);
@@ -41,7 +41,7 @@ struct mach_header		*get_x32(t_file *file)
 {
 	struct mach_header		*mach_header;
 
-	if(!(mach_header = (struct mach_header*)ft_mmap(file->fd, \
+	if (!(mach_header = (struct mach_header*)ft_mmap(file->fd, \
 		sizeof(struct mach_header))))
 		return (NULL);
 	return (mach_header);

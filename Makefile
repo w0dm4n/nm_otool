@@ -37,7 +37,10 @@ SRCBASE_OTOOL	=	\
 					mach_header.c							\
 					swap.c                                  \
 					read_x64.c								\
-					read_x32.c
+					read_x32.c                              \
+					check_file.c							\
+					do.c									\
+					utils.c
 
 SRCBASE_NM		=	\
 					ft_nm.c                                 \

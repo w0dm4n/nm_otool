@@ -28,7 +28,18 @@ typedef struct			s_file
 	char		*file_name;
 	int			fd;
 	struct stat	*stat_data;
+	int			filetype;
 }						t_file;
+
+int						check_file(struct s_file *file);
+void					print_usage(void);
+void					print_not_object(void);
+void					do_64(struct s_file *file);
+void					do_32(struct s_file *file);
+void					*get_ptr(t_file *file);
+void					*get_text_section(int index, char *ptr);
+uint32_t				swap_int32(uint32_t x);
+void					*ft_mmap(int fd, size_t size);
 
 void					*ft_mmap(int fd, size_t size);
 int						is_x64(t_file *file);
@@ -41,7 +52,9 @@ void					read_x32(struct mach_header *header, t_file *file);
 void					get_and_print_first(char *tmp, char ptr);
 void					get_and_print_second(char *tmp, char ptr);
 
-void					print_text_section(int size, char *ptr, uint64_t addr);
+void					print_text_section(int size, char *ptr, uint64_t addr, \
+	struct s_file *file);
+
 void					*get_text_section(int index, char *ptr);
 void					*get_ptr(t_file *file);
 
