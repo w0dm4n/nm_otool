@@ -6,7 +6,7 @@
 /*   By: frmarinh <frmarinh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/27 19:44:58 by frmarinh          #+#    #+#             */
-/*   Updated: 2017/02/27 20:15:32 by frmarinh         ###   ########.fr       */
+/*   Updated: 2017/03/04 18:10:28 by frmarinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ t_file			*get_file_struct(char *name)
 static void		get_content(char *name)
 {
 	struct s_file			*file;
-	uint32_t				magic;
 
 	if (!(file = get_file_struct(name)))
 	{

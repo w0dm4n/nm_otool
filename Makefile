@@ -18,8 +18,8 @@ LENGTHNAME	=	`printf "%s" $(NAMEBASE) | wc -c`
 MAX_COLS	=	$$(echo "$$(tput cols)-24-$(LENGTHNAME)"|bc)
 
 CC			=	gcc
-#FLAGS		=	-Wall -Wextra -Werror -O3
-FLAGS       =
+FLAGS		=	-Wall -Wextra -Werror -O3
+#FLAGS       =
 FLAGS_O		=	
 
 SRCDIR_OTOOL		=	srcs/otool/
@@ -44,6 +44,14 @@ SRCBASE_OTOOL	=	\
 
 SRCBASE_NM		=	\
 					ft_nm.c                                 \
+					mach_header.c							\
+					swap.c                                  \
+					read_x64.c								\
+					read_x32.c                              \
+					check_file.c							\
+					do.c									\
+					utils.c									\
+					custom_nlist.c
 
 INCS		=	$(addprefix $(INCDIR), $(INCBASE))
 

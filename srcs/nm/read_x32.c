@@ -6,28 +6,27 @@
 /*   By: frmarinh <frmarinh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 17:01:39 by frmarinh          #+#    #+#             */
-/*   Updated: 2017/03/04 18:13:08 by frmarinh         ###   ########.fr       */
+/*   Updated: 2017/03/04 18:16:33 by frmarinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm_otool.h"
 
-void	text_section_x32(t_file *file, struct section *section)
+void	read_symtab_x32(void *map, struct symtab_command *symtab)
 {
-	void	*ptr;
-	int		i;
-	int		count;
+	struct nlist			*n_list;
+	int						i;
 
+	n_list = (struct nlist*)(map + symtab->symoff);
 	i = 0;
-	count = 0;
-	if (!(ptr = ft_mmap(file->fd, section->offset)))
-		return ;
-	ft_putstr(file->file_name);
-	ft_putstr("\n");
-	ft_putstr("Contents of (__TEXT,__text) section\n");
-	print_text_section(section->size, get_text_section(section->offset, ptr), \
-		section->addr, file);
-	ft_putstr("\n");
+	while (i < (int)symtab->nsyms)
+	{
+		add_custom_x32(get_custom_nlist(), n_list, (map + symtab->stroff + n_list->n_un.n_strx));
+		n_list++;
+		i++;
+	}
+	range_customs_by_ascii();
+	print_customs();
 }
 
 void	read_x32(struct mach_header *header, t_file *file)
@@ -35,23 +34,20 @@ void	read_x32(struct mach_header *header, t_file *file)
 	int							i;
 	struct load_command			*cmd;
 	void						*ptr;
-	struct segment_command		*segment;
-	struct section				*section;
+	struct segment_command	*segment;
+	struct section			*section;
+	struct symtab_command		*symtab;
 
 	ptr = get_ptr(file) + sizeof(struct mach_header);
 	i = 0;
 	segment = NULL;
 	section = NULL;
+	symtab = NULL;
 	while (i < (int)header->ncmds)
 	{
 		cmd = (struct load_command*)ptr;
-		if (cmd->cmd == LC_SEGMENT)
-		{
-			segment = (struct segment_command*)ptr;
-			section = ptr + sizeof(struct segment_command);
-			if (ft_strcmp(section->segname, "__TEXT") == 0)
-				text_section_x32(file, section);
-		}
+		if (cmd->cmd == LC_SYMTAB)
+			read_symtab_x32(get_ptr(file), (struct symtab_command*)ptr);
 		ptr += cmd->cmdsize;
 		i++;
 	}

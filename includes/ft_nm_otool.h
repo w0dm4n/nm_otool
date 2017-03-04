@@ -31,6 +31,15 @@ typedef struct			s_file
 	int			filetype;
 }						t_file;
 
+typedef struct			s_custom_nlist
+{
+	char					*content;
+	uint32_t				type;
+	uint64_t				addr;
+	struct s_custom_nlist	*next;
+	struct s_custom_nlist	*prev;
+}						t_custom_nlist;
+
 int						check_file(struct s_file *file);
 void					print_usage(void);
 void					print_not_object(void);
@@ -57,5 +66,18 @@ void					print_text_section(int size, char *ptr, uint64_t addr, \
 
 void					*get_text_section(int index, char *ptr);
 void					*get_ptr(t_file *file);
+void					print_addr(int val, int filetype);
+
+t_custom_nlist			*get_custom_nlist(void);
+
+void					add_custom_x64(t_custom_nlist *customs, \
+	struct nlist_64 *nlist, char *c);
+void					add_custom_x32(t_custom_nlist *customs, \
+	struct nlist *nlist, char *c);
+
+void					range_customs_by_ascii(void);
+void					print_customs(void);
+
+struct s_custom_nlist	*g_customs;
 
 #endif
