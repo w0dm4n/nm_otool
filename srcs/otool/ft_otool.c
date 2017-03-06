@@ -35,6 +35,7 @@ void			get_and_print_second(char *tmp, char ptr)
 	}
 	else
 		ft_putstr("0");
+	ft_putstr(" ");
 }
 
 t_file			*get_file_struct(char *name)
@@ -48,6 +49,7 @@ t_file			*get_file_struct(char *name)
 		return (NULL);
 	if (!(file->stat_data = (struct stat*)malloc(sizeof(struct stat))))
 		return (NULL);
+	file->is_x64 = FALSE;
 	return (file);
 }
 
@@ -73,7 +75,11 @@ int				main(int argc, char **argv)
 	if (argc >= 2)
 	{
 		while (argv[i])
+		{
 			get_content(argv[i++]);
+			if (argc > 2)
+				ft_putstr("\n");
+		}
 	}
 	else
 		print_usage();

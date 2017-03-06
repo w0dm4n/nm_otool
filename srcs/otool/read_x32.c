@@ -20,7 +20,7 @@ void	text_section_x32(t_file *file, struct section *section)
 
 	i = 0;
 	count = 0;
-	if (!(ptr = ft_mmap(file->fd, section->offset)))
+	if (!(ptr = ft_mmap(file->fd, file->stat_data->st_size)))
 		return ;
 	ft_putstr(file->file_name);
 	ft_putstr("\n");

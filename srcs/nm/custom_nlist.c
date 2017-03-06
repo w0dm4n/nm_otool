@@ -11,34 +11,31 @@
 /* ************************************************************************** */
 
 #include "ft_nm_otool.h"
-#include <string.h>
-
-t_custom_nlist		*alloc_custom(void)
-{
-	if(!(g_customs = (struct s_custom_nlist*) \
-		malloc(sizeof(struct s_custom_nlist))))
-		return (NULL);
-	g_customs->content = NULL;
-	g_customs->type = 0;
-	g_customs->addr = 0;
-	g_customs->next = NULL;
-	g_customs->prev = NULL;
-	return (g_customs);
-}
 
 t_custom_nlist		*get_custom_nlist(void)
 {
 	if (g_customs)
 		return (g_customs);
 	else
-		return (alloc_custom());
+	{
+		if (!(g_customs = (struct s_custom_nlist*)\
+		malloc(sizeof(struct s_custom_nlist))))
+			return (NULL);
+		g_customs->content = NULL;
+		g_customs->type = 0;
+		g_customs->addr = 0;
+		g_customs->next = NULL;
+		g_customs->prev = NULL;
+		return (g_customs);
+	}
 }
 
-void	add_custom_x64(t_custom_nlist *customs, struct nlist_64 *nlist, char *c)
+void				add_custom_x64(t_custom_nlist *customs,\
+	struct nlist_64 *nlist, char *c)
 {
 	struct s_custom_nlist	*new;
 
-	if(!(new = (struct s_custom_nlist*) \
+	if (!(new = (struct s_custom_nlist*)\
 		malloc(sizeof(struct s_custom_nlist))))
 		return ;
 	new->content = c;
@@ -46,18 +43,18 @@ void	add_custom_x64(t_custom_nlist *customs, struct nlist_64 *nlist, char *c)
 	new->addr = nlist->n_value;
 	new->next = NULL;
 	new->prev = NULL;
-
 	while (customs->next)
 		customs = customs->next;
 	customs->next = new;
 	new->prev = customs;
 }
 
-void	add_custom_x32(t_custom_nlist *customs, struct nlist *nlist, char *c)
+void				add_custom_x32(t_custom_nlist *customs,\
+	struct nlist *nlist, char *c)
 {
 	struct s_custom_nlist	*new;
 
-	if(!(new = (struct s_custom_nlist*) \
+	if (!(new = (struct s_custom_nlist*)\
 		malloc(sizeof(struct s_custom_nlist))))
 		return ;
 	new->content = c;
@@ -65,14 +62,14 @@ void	add_custom_x32(t_custom_nlist *customs, struct nlist *nlist, char *c)
 	new->addr = nlist->n_value;
 	new->next = NULL;
 	new->prev = NULL;
-
 	while (customs->next)
 		customs = customs->next;
 	customs->next = new;
 	new->prev = customs;
 }
 
-void	replace_custom_data(t_custom_nlist *first, t_custom_nlist *second)
+void				replace_custom_data(t_custom_nlist *first,\
+	t_custom_nlist *second)
 {
 	char		*data;
 	uint32_t	type;
@@ -89,14 +86,15 @@ void	replace_custom_data(t_custom_nlist *first, t_custom_nlist *second)
 	second->addr = addr;
 }
 
-void	range_customs_by_ascii(void)
+void				range_customs_by_ascii(void)
 {
 	t_custom_nlist *customs;
+	t_custom_nlist *tmp;
+	t_custom_nlist *tmp_2;
 
 	customs = get_custom_nlist();
-	t_custom_nlist *tmp = customs->next;
-	t_custom_nlist *tmp_2 = NULL;
-
+	tmp = customs->next;
+	tmp_2 = NULL;
 	while (tmp)
 	{
 		tmp_2 = tmp->next;

@@ -23,6 +23,7 @@ void	do_64(struct s_file *file)
 {
 	struct mach_header_64	*header_64;
 
+	file->is_x64 = TRUE;
 	header_64 = get_x64(file);
 	if (header_64->filetype < 3 && header_64->filetype > 0)
 	{

@@ -29,6 +29,7 @@ typedef struct			s_file
 	int			fd;
 	struct stat	*stat_data;
 	int			filetype;
+	int			is_x64;
 }						t_file;
 
 typedef struct			s_custom_nlist
@@ -66,7 +67,7 @@ void					print_text_section(int size, char *ptr, uint64_t addr, \
 
 void					*get_text_section(int index, char *ptr);
 void					*get_ptr(t_file *file);
-void					print_addr(int val, int filetype);
+void					print_addr(int val, t_file *file);
 
 t_custom_nlist			*get_custom_nlist(void);
 
@@ -76,7 +77,7 @@ void					add_custom_x32(t_custom_nlist *customs, \
 	struct nlist *nlist, char *c);
 
 void					range_customs_by_ascii(void);
-void					print_customs(void);
+void					print_customs(t_file *file);
 
 struct s_custom_nlist	*g_customs;
 

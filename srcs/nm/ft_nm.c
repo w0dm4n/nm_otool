@@ -48,6 +48,7 @@ t_file			*get_file_struct(char *name)
 		return (NULL);
 	if (!(file->stat_data = (struct stat*)malloc(sizeof(struct stat))))
 		return (NULL);
+	file->is_x64 = FALSE;
 	return (file);
 }
 
@@ -80,6 +81,8 @@ int				main(int argc, char **argv)
 				ft_putstr(":\n");
 			}
 			get_content(argv[i]);
+			if ((i + 1) < argc)
+				ft_putstr("\n");
 			i++;
 		}
 	}

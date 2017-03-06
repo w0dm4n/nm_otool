@@ -12,16 +12,19 @@
 
 #include "ft_nm_otool.h"
 
-void	print_by_type(int type)
+void	print_by_type(int type, int is_x64)
 {
-	ft_putstr("0000000");
-	if (type == 1)
-		ft_putstr("0");
-	else if (type == 2)
-		ft_putstr("1");
+	if (is_x64)
+	{
+		ft_putstr("0000000");
+		if (type == 1)
+			ft_putstr("0");
+		else if (type == 2)
+			ft_putstr("1");
+	}
 }
 
-void	print_addr(int val, int file_type)
+void	print_addr(int val, t_file *file)
 {
 	char	*tmp;
 	size_t	i;
@@ -30,7 +33,7 @@ void	print_addr(int val, int file_type)
 	tmp = ft_itoabase_uint(val, "0123456789abcdef");
 	if (tmp != NULL && ft_strlen(tmp) > 0)
 	{
-		print_by_type(file_type);
+		print_by_type(file->filetype, file->is_x64);
 		while (i > ft_strlen(tmp))
 		{
 			ft_putchar('0');
@@ -41,7 +44,7 @@ void	print_addr(int val, int file_type)
 	}
 	else
 	{
-		print_by_type(file_type);
+		print_by_type(file->filetype, file->is_x64);
 		ft_putstr("00000000");
 	}
 }
@@ -61,13 +64,12 @@ void	print_text_section(int size, char *ptr, uint64_t addr, t_file *file)
 	{
 		if (count == 0)
 		{
-			print_addr((int)addr + i, file->filetype);
+			print_addr((int)addr + i, file);
 			ft_putstr("\t");
 		}
 		count++;
 		get_and_print_first(tmp, str[i]);
 		get_and_print_second(tmp, str[i]);
-		ft_putstr(" ");
 		if (count == 16)
 		{
 			ft_putstr("\n");
@@ -91,7 +93,6 @@ void	text_section_x64(t_file *file, struct section_64 *section)
 	ft_putstr("Contents of (__TEXT,__text) section\n");
 	print_text_section(section->size, get_text_section(section->offset, ptr), \
 		section->addr, file);
-	ft_putstr("\n");
 }
 
 void	read_x64(struct mach_header_64 *header, t_file *file)

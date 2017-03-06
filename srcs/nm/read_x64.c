@@ -12,17 +12,28 @@
 
 #include "ft_nm_otool.h"
 
-void	print_addr(int val, int filetype)
+void	print_by_type(int type, int is_x64)
+{
+	if (is_x64)
+	{
+		ft_putstr("0000000");
+		if (type == 1)
+			ft_putstr("0");
+		else if (type == 2)
+			ft_putstr("1");
+	}
+}
+
+void	print_addr(int val, t_file *file)
 {
 	char	*tmp;
 	size_t	i;
 
-	filetype = 0;
 	i = 8;
 	tmp = ft_itoabase_uint(val, "0123456789abcdef");
 	if (tmp != NULL && ft_strlen(tmp) > 0)
 	{
-		ft_putstr("00000001");
+		print_by_type(file->filetype, file->is_x64);
 		while (i > ft_strlen(tmp))
 		{
 			ft_putchar('0');
@@ -33,21 +44,22 @@ void	print_addr(int val, int filetype)
 	}
 	else
 	{
-		ft_putstr("00000001");
+		print_by_type(file->filetype, file->is_x64);
 		ft_putstr("00000000");
 	}
 }
 
-void	print_customs(void)
+void	print_customs(t_file *file)
 {
 	while (g_customs)
 	{
 		if (g_customs->content)
 		{
-			if (g_customs->addr)
-				print_addr(g_customs->addr, -1);
+			if (g_customs->addr || \
+				(g_customs->type == 14 || g_customs->type == 15))
+				print_addr(g_customs->addr, file);
 			else
-				ft_putstr("\t\t");
+				ft_putstr((file->is_x64) ? "\t\t" : "\t");
 			if (g_customs->type == 1)
 				ft_putstr(" U ");
 			else if (g_customs->type == 14)
@@ -61,7 +73,7 @@ void	print_customs(void)
 	}
 }
 
-void	read_symtab_x64(void *map, struct symtab_command *symtab)
+void	read_symtab_x64(void *map, struct symtab_command *symtab, t_file *file)
 {
 	struct nlist_64			*n_list;
 	int						i;
@@ -70,12 +82,13 @@ void	read_symtab_x64(void *map, struct symtab_command *symtab)
 	i = 0;
 	while (i < (int)symtab->nsyms)
 	{
-		add_custom_x64(get_custom_nlist(), n_list, (map + symtab->stroff + n_list->n_un.n_strx));
+		add_custom_x64(get_custom_nlist(),\
+			n_list, (map + symtab->stroff + n_list->n_un.n_strx));
 		n_list++;
 		i++;
 	}
 	range_customs_by_ascii();
-	print_customs();
+	print_customs(file);
 }
 
 void	read_x64(struct mach_header_64 *header, t_file *file)
@@ -84,19 +97,17 @@ void	read_x64(struct mach_header_64 *header, t_file *file)
 	struct load_command			*cmd;
 	void						*ptr;
 	struct segment_command_64	*segment;
-	struct section_64			*section;
 	struct symtab_command		*symtab;
 
 	ptr = get_ptr(file) + sizeof(struct mach_header_64);
 	i = 0;
 	segment = NULL;
-	section = NULL;
 	symtab = NULL;
 	while (i < (int)header->ncmds)
 	{
 		cmd = (struct load_command*)ptr;
 		if (cmd->cmd == LC_SYMTAB)
-			read_symtab_x64(get_ptr(file), (struct symtab_command*)ptr);
+			read_symtab_x64(get_ptr(file), (struct symtab_command*)ptr, file);
 		ptr += cmd->cmdsize;
 		i++;
 	}
