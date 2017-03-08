@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "ft_nm_otool.h"
+#include <stdio.h>
 
 t_custom_nlist		*get_custom_nlist(void)
 {
@@ -35,6 +36,8 @@ void				add_custom_x64(t_custom_nlist *customs,\
 {
 	struct s_custom_nlist	*new;
 
+	if (nlist->n_type == 60)
+		return ;
 	if (!(new = (struct s_custom_nlist*)\
 		malloc(sizeof(struct s_custom_nlist))))
 		return ;
@@ -43,10 +46,15 @@ void				add_custom_x64(t_custom_nlist *customs,\
 	new->addr = nlist->n_value;
 	new->next = NULL;
 	new->prev = NULL;
-	while (customs->next)
-		customs = customs->next;
-	customs->next = new;
-	new->prev = customs;
+	if ((int)nlist->n_sect == 8)
+		new->type = 66;
+	if (authorized_type(new->type))
+	{
+		while (customs->next)
+			customs = customs->next;
+		customs->next = new;
+		new->prev = customs;
+	}
 }
 
 void				add_custom_x32(t_custom_nlist *customs,\
@@ -62,10 +70,15 @@ void				add_custom_x32(t_custom_nlist *customs,\
 	new->addr = nlist->n_value;
 	new->next = NULL;
 	new->prev = NULL;
-	while (customs->next)
-		customs = customs->next;
-	customs->next = new;
-	new->prev = customs;
+	if ((int)nlist->n_sect == 8)
+		new->type = 66;
+	if (authorized_type(new->type))
+	{
+		while (customs->next)
+			customs = customs->next;
+		customs->next = new;
+		new->prev = customs;
+	}
 }
 
 void				replace_custom_data(t_custom_nlist *first,\

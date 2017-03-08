@@ -24,11 +24,12 @@ void	do_64(struct s_file *file)
 	struct mach_header_64	*header_64;
 
 	header_64 = get_x64(file);
+	check_swap_x64(header_64);
 	file->is_x64 = TRUE;
-	if (header_64->filetype < 3 && header_64->filetype > 0)
+	if ((header_64->filetype < 3 && header_64->filetype > 0) \
+		|| header_64->filetype == 6)
 	{
 		file->filetype = header_64->filetype;
-		check_swap_x64(header_64);
 		read_x64(header_64, file);
 	}
 	else
@@ -41,10 +42,11 @@ void	do_32(struct s_file *file)
 	struct mach_header		*header_32;
 
 	header_32 = get_x32(file);
-	if (header_32->filetype < 3 && header_32->filetype > 0)
+	check_swap_x32(header_32);
+	if ((header_32->filetype < 3 && header_32->filetype > 0) \
+		|| header_32->filetype == 6)
 	{
 		file->filetype = header_32->filetype;
-		check_swap_x32(header_32);
 		read_x32(header_32, file);
 	}
 	else

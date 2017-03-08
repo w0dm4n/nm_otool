@@ -21,6 +21,8 @@ void	print_by_type(int type, int is_x64)
 			ft_putstr("0");
 		else if (type == 2)
 			ft_putstr("1");
+		else
+			ft_putstr("0");
 	}
 }
 

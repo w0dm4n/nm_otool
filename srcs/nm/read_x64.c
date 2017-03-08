@@ -21,6 +21,8 @@ void	print_by_type(int type, int is_x64)
 			ft_putstr("0");
 		else if (type == 2)
 			ft_putstr("1");
+		else
+			ft_putstr("0");
 	}
 }
 
@@ -59,8 +61,10 @@ void	print_customs(t_file *file)
 				(g_customs->type == 14 || g_customs->type == 15))
 				print_addr(g_customs->addr, file);
 			else
-				ft_putstr((file->is_x64) ? "\t\t" : "\t");
-			if (g_customs->type == 1)
+				(file->is_x64) ? print_space(16) : print_space(8);
+			if (g_customs->type == 66)
+				print_glob_by_type(file->filetype);
+			else if (g_customs->type == 1)
 				ft_putstr(" U ");
 			else if (g_customs->type == 14)
 				ft_putstr(" t ");

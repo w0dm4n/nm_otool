@@ -78,6 +78,9 @@ void					add_custom_x32(t_custom_nlist *customs, \
 
 void					range_customs_by_ascii(void);
 void					print_customs(t_file *file);
+void					print_space(int space);
+int						authorized_type(int type);
+void					print_glob_by_type(int type);
 
 struct s_custom_nlist	*g_customs;
 

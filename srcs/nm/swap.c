@@ -12,7 +12,7 @@
 
 #include "ft_nm_otool.h"
 
-static int				should_swap_bytes(uint32_t magic)
+int						should_swap_bytes(uint32_t magic)
 {
 	return (magic == MH_CIGAM || magic == MH_CIGAM_64);
 }
