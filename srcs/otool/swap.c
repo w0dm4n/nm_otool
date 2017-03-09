@@ -6,13 +6,13 @@
 /*   By: frmarinh <frmarinh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 19:24:24 by frmarinh          #+#    #+#             */
-/*   Updated: 2017/03/01 19:24:27 by frmarinh         ###   ########.fr       */
+/*   Updated: 2017/03/09 21:56:59 by frmarinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm_otool.h"
 
-static int				should_swap_bytes(uint32_t magic)
+int						should_swap_bytes(uint32_t magic)
 {
 	return (magic == MH_CIGAM || magic == MH_CIGAM_64);
 }
