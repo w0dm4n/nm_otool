@@ -17,6 +17,11 @@ int						is_magic_64(uint32_t magic)
 	return (magic == MH_MAGIC_64 || magic == MH_CIGAM_64);
 }
 
+int						is_magic_32(uint32_t magic)
+{
+	return (magic == MH_MAGIC || magic == MH_CIGAM);
+}
+
 int						is_x64(t_file *file)
 {
 	struct mach_header	*mach_header;

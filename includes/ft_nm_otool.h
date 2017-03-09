@@ -81,6 +81,12 @@ void					print_customs(t_file *file);
 void					print_space(int space);
 int						authorized_type(int type);
 void					print_glob_by_type(int type);
+int						should_swap_bytes(uint32_t magic);
+int						is_fat(uint32_t magic);
+int						is_magic_64(uint32_t magic);
+int						is_magic_32(uint32_t magic);
+void					read_universal(void *map, struct symtab_command *symtab, \
+	t_file *file, void *header);
 
 struct s_custom_nlist	*g_customs;
 

@@ -17,6 +17,11 @@ int						should_swap_bytes(uint32_t magic)
 	return (magic == MH_CIGAM || magic == MH_CIGAM_64);
 }
 
+int						is_fat(uint32_t magic)
+{
+	return (magic == FAT_MAGIC || magic == FAT_CIGAM);
+}
+
 void					swap_mach_header_x32(struct mach_header *mh)
 {
 	mh->magic = swap_int32(mh->magic);
