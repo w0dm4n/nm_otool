@@ -47,14 +47,5 @@ void		print_space(int space)
 
 int			authorized_type(int type)
 {
-	return (type == 66 || type == 1 || type == 14 || type == 15);
-}
-
-
-void		print_glob_by_type(int type)
-{
-	if (type == 6)
-		ft_putstr(" S ");
-	else
-		ft_putstr(" D ");
+	return (type == 1 || type == 14 || type == 15 || type == 30);
 }

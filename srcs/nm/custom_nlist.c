@@ -27,6 +27,7 @@ t_custom_nlist		*get_custom_nlist(void)
 		g_customs->addr = 0;
 		g_customs->next = NULL;
 		g_customs->prev = NULL;
+		g_customs->sect = 0;
 		return (g_customs);
 	}
 }
@@ -46,8 +47,12 @@ void				add_custom_x64(t_custom_nlist *customs,\
 	new->addr = nlist->n_value;
 	new->next = NULL;
 	new->prev = NULL;
-	if ((int)nlist->n_sect == 8)
-		new->type = 66;
+	new->sect = nlist->n_sect;
+	/*if (!ft_strcmp(c, "__ZZ14bundle_versionvE13BundleVersion"))
+	{
+		printf("nsect: %d, ntype: %d\n", new->sect, new->type);
+		exit(0);
+	}*/
 	if (authorized_type(new->type))
 	{
 		while (customs->next)
@@ -70,8 +75,7 @@ void				add_custom_x32(t_custom_nlist *customs,\
 	new->addr = nlist->n_value;
 	new->next = NULL;
 	new->prev = NULL;
-	if ((int)nlist->n_sect == 8)
-		new->type = 66;
+	new->sect = nlist->n_sect;
 	if (authorized_type(new->type))
 	{
 		while (customs->next)
@@ -87,16 +91,20 @@ void				replace_custom_data(t_custom_nlist *first,\
 	char		*data;
 	uint32_t	type;
 	uint64_t	addr;
+	uint8_t		sect;
 
 	data = first->content;
 	type = first->type;
 	addr = first->addr;
+	sect = first->sect;
 	first->content = second->content;
 	first->type = second->type;
 	first->addr = second->addr;
+	first->sect = second->sect;
 	second->content = data;
 	second->type = type;
 	second->addr = addr;
+	second->sect = sect;
 }
 
 void				range_customs_by_ascii(void)

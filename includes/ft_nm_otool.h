@@ -30,6 +30,7 @@ typedef struct			s_file
 	struct stat	*stat_data;
 	int			filetype;
 	int			is_x64;
+	int			is_fat;
 }						t_file;
 
 typedef struct			s_custom_nlist
@@ -39,6 +40,7 @@ typedef struct			s_custom_nlist
 	uint64_t				addr;
 	struct s_custom_nlist	*next;
 	struct s_custom_nlist	*prev;
+	uint8_t					sect;
 }						t_custom_nlist;
 
 int						check_file(struct s_file *file);
@@ -85,8 +87,13 @@ int						should_swap_bytes(uint32_t magic);
 int						is_fat(uint32_t magic);
 int						is_magic_64(uint32_t magic);
 int						is_magic_32(uint32_t magic);
-void					read_universal(void *map, struct symtab_command *symtab, \
-	t_file *file, void *header);
+void					read_universal(void *map, \
+	struct symtab_command *symtab, t_file *file, void *header);
+int						is_universal(t_file *file);
+void					do_fat(struct s_file *file);
+void					read_fat_x64(t_file *file, \
+	struct mach_header_64 *header, void *ptr);
+void					print_current_type(t_custom_nlist *current, t_file *file);
 
 struct s_custom_nlist	*g_customs;
 

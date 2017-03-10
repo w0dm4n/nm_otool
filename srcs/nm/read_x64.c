@@ -62,14 +62,7 @@ void	print_customs(t_file *file)
 				print_addr(g_customs->addr, file);
 			else
 				(file->is_x64) ? print_space(16) : print_space(8);
-			if (g_customs->type == 66)
-				print_glob_by_type(file->filetype);
-			else if (g_customs->type == 1)
-				ft_putstr(" U ");
-			else if (g_customs->type == 14)
-				ft_putstr(" t ");
-			else if (g_customs->type == 15)
-				ft_putstr(" T ");
+			print_current_type(g_customs, file);
 			ft_putstr(g_customs->content);
 			ft_putstr("\n");
 		}
@@ -88,24 +81,6 @@ void	read_symtab_x64(void *map, struct symtab_command *symtab, t_file *file)
 	{
 		add_custom_x64(get_custom_nlist(),\
 			n_list, (map + symtab->stroff + n_list->n_un.n_strx));
-		n_list++;
-		i++;
-	}
-	range_customs_by_ascii();
-	print_customs(file);
-}
-
-void	read_universal(void *map, struct symtab_command *symtab, t_file *file, void *header)
-{
-	struct nlist_64			*n_list;
-	int						i;
-
-	n_list = (struct nlist_64*)(map + symtab->symoff);
-	i = 0;
-	while (i < (int)symtab->nsyms)
-	{
-		add_custom_x64(get_custom_nlist(),\
-			n_list, (header + symtab->stroff + n_list->n_un.n_strx));
 		n_list++;
 		i++;
 	}

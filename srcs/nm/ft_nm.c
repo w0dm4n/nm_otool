@@ -49,6 +49,7 @@ t_file			*get_file_struct(char *name)
 	if (!(file->stat_data = (struct stat*)malloc(sizeof(struct stat))))
 		return (NULL);
 	file->is_x64 = FALSE;
+	file->is_fat = FALSE;
 	return (file);
 }
 
@@ -63,7 +64,10 @@ static void		get_content(char *name)
 	}
 	if (!check_file(file))
 		return ;
-	(is_x64(file)) ? do_64(file) : do_32(file);
+	if (is_universal(file))
+		do_fat(file);
+	else
+		(is_x64(file)) ? do_64(file) : do_32(file);
 }
 
 int				main(int argc, char **argv)
