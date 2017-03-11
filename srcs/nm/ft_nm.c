@@ -12,31 +12,6 @@
 
 #include "ft_nm_otool.h"
 
-void			get_and_print_first(char *tmp, char ptr)
-{
-	tmp = ft_itoabase_uint((ptr) >> 4, "0123456789abcdef");
-	if (tmp != NULL)
-	{
-		ft_putchar(tmp[ft_strlen(tmp) - 1]);
-		free(tmp);
-	}
-	else
-		ft_putstr("0");
-}
-
-void			get_and_print_second(char *tmp, char ptr)
-{
-	tmp = ft_itoabase_uint(ptr - \
-		((ptr >> 4) << 4), "0123456789abcdef");
-	if (tmp != NULL)
-	{
-		ft_putchar(tmp[ft_strlen(tmp) - 1]);
-		free(tmp);
-	}
-	else
-		ft_putstr("0");
-}
-
 t_file			*get_file_struct(char *name, char *flags)
 {
 	struct s_file	*file;
@@ -58,8 +33,6 @@ static void		get_content(char *name, char *flags)
 {
 	struct s_file			*file;
 
-	if (has_flags('h', flags))
-		print_help();
 	if (!(file = get_file_struct(name, flags)))
 	{
 		print_usage();
@@ -73,13 +46,28 @@ static void		get_content(char *name, char *flags)
 		(is_x64(file)) ? do_64(file) : do_32(file);
 }
 
+void			do_current(char *current, char **argv, int i, int argc)
+{
+	char	*flags;
+
+	flags = get_flags(argv);
+	if (has_flags('h', flags))
+		print_help();
+	if (count_file(argv) >= 2)
+	{
+		ft_putstr(current);
+		ft_putstr(":\n");
+	}
+	get_content(current, flags);
+	if ((i + 1) < argc && count_file(argv) > 1)
+		ft_putstr("\n");
+}
+
 int				main(int argc, char **argv)
 {
 	int		i;
-	char	*flags;
 
 	i = 1;
-	flags = get_flags(argv);
 	if (argc >= 2)
 	{
 		if (count_file(argv) > 1)
@@ -87,16 +75,7 @@ int				main(int argc, char **argv)
 		while (argv[i])
 		{
 			if (argv[i][0] != '-' || argv[i][1] == 'h')
-			{
-				if (count_file(argv) >= 2)
-				{
-					ft_putstr(argv[i]);
-					ft_putstr(":\n");
-				}
-				get_content(argv[i], flags);
-				if ((i + 1) < argc && count_file(argv) > 1)
-					ft_putstr("\n");
-			}
+				do_current(argv[i], argv, i, argc);
 			i++;
 		}
 	}

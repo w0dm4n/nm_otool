@@ -14,9 +14,9 @@
 
 void		print_usage(void)
 {
-	ft_putstr_fd("Usage : ./ft_nm <input files> Dump only ", 2);
-	ft_putstr_fd("symbols from this segment and", 2);
-	ft_putstr_fd(" section name, Mach-O only\n", 2);
+	ft_putstr_fd("Usage : ./ft_nm <input files> Dump only ", 1);
+	ft_putstr_fd("symbols from this segment and", 1);
+	ft_putstr_fd(" section name, Mach-O only\n", 1);
 }
 
 void		print_not_object(void)
