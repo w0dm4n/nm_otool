@@ -19,8 +19,8 @@ void		print_usage(void)
 
 void		print_not_object(void)
 {
-	ft_putstr("./ft_otool: The file was not recognized as");
-	ft_putstr(" a valid object file.\n");
+	ft_putstr_fd("./ft_otool: The file was not recognized as", 2);
+	ft_putstr_fd(" a valid object file.\n", 2);
 }
 
 int			check_file(struct s_file *file)

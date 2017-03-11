@@ -73,7 +73,6 @@ void				print_help(void)
 	ft_putstr("  -u        - Show only undefined symbols\n");
 	ft_putstr("  -h        - Show help on ft_nm\n");
 	ft_putstr("  -j        - Show all without n_value and symbols\n");
-	exit(0);
 }
 
 void				print_extern(t_file *file)

@@ -38,7 +38,7 @@ void			get_and_print_second(char *tmp, char ptr)
 	ft_putstr(" ");
 }
 
-t_file			*get_file_struct(char *name)
+t_file			*get_file_struct(char *name, char *flags)
 {
 	struct s_file	*file;
 
@@ -50,20 +50,26 @@ t_file			*get_file_struct(char *name)
 	if (!(file->stat_data = (struct stat*)malloc(sizeof(struct stat))))
 		return (NULL);
 	file->is_x64 = FALSE;
+	file->flags = flags;
 	return (file);
 }
 
-static void		get_content(char *name)
+static void		get_content(char *name, char *flags)
 {
 	struct s_file			*file;
 
-	if (!(file = get_file_struct(name)))
+	if (!(file = get_file_struct(name, flags)))
 	{
 		print_usage();
 		return ;
 	}
 	if (!check_file(file))
 		return ;
+	if (has_flags('m', flags))
+	{
+		print_mach_header(file);
+		return ;
+	}
 	if (is_universal(file))
 		do_fat(file);
 	else
@@ -75,12 +81,21 @@ int				main(int argc, char **argv)
 	int i;
 
 	i = 1;
+	if (has_flags('h', get_flags(argv)))
+	{
+		print_help();
+		return (0);
+	}
 	if (argc >= 2)
 	{
 		while (argv[i])
 		{
-			get_content(argv[i++]);
-			ft_putstr("\n");
+			if (argv[i][0] != '-')
+			{
+				get_content(argv[i], get_flags(argv));
+				ft_putstr("\n");
+			}
+			i++;
 		}
 	}
 	else

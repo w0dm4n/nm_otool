@@ -51,8 +51,6 @@ void			do_current(char *current, char **argv, int i, int argc)
 	char	*flags;
 
 	flags = get_flags(argv);
-	if (has_flags('h', flags))
-		print_help();
 	if (count_file(argv) >= 2)
 	{
 		ft_putstr(current);
@@ -68,6 +66,11 @@ int				main(int argc, char **argv)
 	int		i;
 
 	i = 1;
+	if (has_flags('h', get_flags(argv)))
+	{
+		print_help();
+		return (0);
+	}
 	if (argc >= 2)
 	{
 		if (count_file(argv) > 1)

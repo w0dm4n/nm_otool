@@ -40,7 +40,9 @@ SRCBASE_OTOOL	=	\
 					check_file.c							\
 					do.c									\
 					utils.c									\
-					fat.c
+					fat.c									\
+					flags.c									\
+					print.c
 
 SRCBASE_NM		=	\
 					ft_nm.c                                 \
