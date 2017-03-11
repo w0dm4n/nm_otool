@@ -12,11 +12,6 @@
 
 #include "ft_nm_otool.h"
 
-void		*get_ptr(t_file *file)
-{
-	return (ft_mmap(file->fd, file->stat_data->st_size));
-}
-
 void		*get_text_section(int index, char *ptr)
 {
 	return (ptr + index);
@@ -43,4 +38,20 @@ void		print_space(int space)
 		ft_putchar(' ');
 		space--;
 	}
+}
+
+int			count_file(char **argv)
+{
+	int count;
+	int i;
+
+	count = 0;
+	i = 1;
+	while (argv[i])
+	{
+		if (argv[i][0] != '-')
+			count++;
+		i++;
+	}
+	return (count);
 }

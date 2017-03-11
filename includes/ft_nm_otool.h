@@ -31,6 +31,7 @@ typedef struct			s_file
 	int			filetype;
 	int			is_x64;
 	int			is_fat;
+	char		*flags;
 }						t_file;
 
 typedef struct			s_custom_nlist
@@ -101,6 +102,12 @@ char					get_symbol_x32(struct nlist symbol, \
 void					print_symbol(t_custom_nlist *current, t_file *file);
 void					text_section_x64(t_file *file, \
 	struct section_64 *section);
+char					*get_flags(char **argv);
+int						has_flags(char f, char *flags);
+void					print_customs(t_file *file);
+void					print_extern(t_file *file);
+int						count_file(char **argv);
+void					print_help(void);
 
 struct s_custom_nlist	*g_customs;
 
@@ -109,5 +116,7 @@ struct s_custom_nlist	*g_customs;
 
 # define FIND_OBJ_X32 st_find_char_x32_obj(segment, symbol.n_sect - n - 1)
 # define FIND_ALL_X32 st_find_char_x32(segment, symbol.n_sect - n - 1)
+
+# define NM_FLAGS "urhj"
 
 #endif

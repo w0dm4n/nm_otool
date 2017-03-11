@@ -37,7 +37,7 @@ void			get_and_print_second(char *tmp, char ptr)
 		ft_putstr("0");
 }
 
-t_file			*get_file_struct(char *name)
+t_file			*get_file_struct(char *name, char *flags)
 {
 	struct s_file	*file;
 
@@ -50,14 +50,17 @@ t_file			*get_file_struct(char *name)
 		return (NULL);
 	file->is_x64 = FALSE;
 	file->is_fat = FALSE;
+	file->flags = flags;
 	return (file);
 }
 
-static void		get_content(char *name)
+static void		get_content(char *name, char *flags)
 {
 	struct s_file			*file;
 
-	if (!(file = get_file_struct(name)))
+	if (has_flags('h', flags))
+		print_help();
+	if (!(file = get_file_struct(name, flags)))
 	{
 		print_usage();
 		return ;
@@ -72,21 +75,28 @@ static void		get_content(char *name)
 
 int				main(int argc, char **argv)
 {
-	int i;
+	int		i;
+	char	*flags;
 
 	i = 1;
+	flags = get_flags(argv);
 	if (argc >= 2)
 	{
+		if (count_file(argv) > 1)
+			ft_putstr("\n");
 		while (argv[i])
 		{
-			if (argc > 2)
+			if (argv[i][0] != '-' || argv[i][1] == 'h')
 			{
-				ft_putstr(argv[i]);
-				ft_putstr(":\n");
+				if (count_file(argv) >= 2)
+				{
+					ft_putstr(argv[i]);
+					ft_putstr(":\n");
+				}
+				get_content(argv[i], flags);
+				if ((i + 1) < argc && count_file(argv) > 1)
+					ft_putstr("\n");
 			}
-			get_content(argv[i]);
-			if ((i + 1) < argc)
-				ft_putstr("\n");
 			i++;
 		}
 	}

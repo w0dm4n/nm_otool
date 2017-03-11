@@ -12,6 +12,11 @@
 
 #include "ft_nm_otool.h"
 
+void	*get_ptr(t_file *file)
+{
+	return (ft_mmap(file->fd, file->stat_data->st_size));
+}
+
 void	print_by_type(int type, int is_x64)
 {
 	if (is_x64)
@@ -51,32 +56,6 @@ void	print_addr(int val, t_file *file)
 	}
 }
 
-void	print_customs(t_file *file)
-{
-	while (g_customs)
-	{
-		if (g_customs->content)
-		{
-			if (g_customs->addr || \
-				(g_customs->type == 14 || g_customs->type == 15))
-				print_addr(g_customs->addr, file);
-			else
-				(file->is_x64) ? print_space(16) : print_space(8);
-			if (g_customs->symbol > 0)
-			{
-				ft_putstr(" ");
-				ft_putchar(g_customs->symbol);
-				ft_putstr(" ");
-			}
-			else
-				print_symbol(g_customs, file);
-			ft_putstr(g_customs->content);
-			ft_putstr("\n");
-		}
-		g_customs = g_customs->next;
-	}
-}
-
 void	read_symtab_x64(void *map, struct symtab_command *symtab, t_file *file)
 {
 	struct nlist_64			*n_list;
@@ -93,7 +72,10 @@ void	read_symtab_x64(void *map, struct symtab_command *symtab, t_file *file)
 		i++;
 	}
 	range_customs_by_ascii();
-	print_customs(file);
+	if (has_flags('u', file->flags))
+		print_extern(file);
+	else
+		print_customs(file);
 }
 
 void	read_x64(struct mach_header_64 *header, t_file *file)

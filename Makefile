@@ -6,7 +6,7 @@
 #    By: frmarinh <frmarinh@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/20 17:57:50 by frmarinh          #+#    #+#              #
-#    Updated: 2017/03/11 05:08:55 by frmarinh         ###   ########.fr        #
+#    Updated: 2017/03/11 07:49:31 by frmarinh         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,7 +55,9 @@ SRCBASE_NM		=	\
 					fat.c									\
 					symbol_x32.c							\
 					symbol_x64.c							\
-					type.c
+					type.c									\
+					flags.c									\
+					print.c
 
 INCS		=	$(addprefix $(INCDIR), $(INCBASE))
 

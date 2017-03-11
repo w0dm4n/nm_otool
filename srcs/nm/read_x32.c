@@ -28,7 +28,10 @@ void	read_symtab_x32(void *map, struct symtab_command *symtab, t_file *file)
 		i++;
 	}
 	range_customs_by_ascii();
-	print_customs(file);
+	if (has_flags('u', file->flags))
+		print_extern(file);
+	else
+		print_customs(file);
 }
 
 void	read_x32(struct mach_header *header, t_file *file)

@@ -14,14 +14,15 @@
 
 void		print_usage(void)
 {
-	ft_putstr("Usage : ./ft_nm <input files> Dump only symbols from this");
-	ft_putstr(" segment and section name, Mach-O only\n");
+	ft_putstr_fd("Usage : ./ft_nm <input files> Dump only ", 2);
+	ft_putstr_fd("symbols from this segment and", 2);
+	ft_putstr_fd(" section name, Mach-O only\n", 2);
 }
 
 void		print_not_object(void)
 {
-	ft_putstr("./ft_nm: The file was not recognized as");
-	ft_putstr(" a valid object file.\n");
+	ft_putstr_fd("./ft_nm: The file was not recognized as", 2);
+	ft_putstr_fd(" a valid object file.\n", 2);
 }
 
 int			check_file(struct s_file *file)
