@@ -12,11 +12,6 @@
 
 #include "ft_nm_otool.h"
 
-int						is_magic_64(uint32_t magic)
-{
-	return (magic == MH_MAGIC_64 || magic == MH_CIGAM_64);
-}
-
 int						is_x64(t_file *file)
 {
 	struct mach_header	*mach_header;
@@ -45,4 +40,19 @@ struct mach_header		*get_x32(t_file *file)
 		sizeof(struct mach_header))))
 		return (NULL);
 	return (mach_header);
+}
+
+int						is_fat(uint32_t magic)
+{
+	return (magic == FAT_MAGIC || magic == FAT_CIGAM);
+}
+
+int						is_universal(t_file *file)
+{
+	struct mach_header	*mach_header;
+
+	if (!(mach_header = (struct mach_header*)ft_mmap(file->fd, \
+		sizeof(struct mach_header))))
+		return (-1);
+	return (is_fat(mach_header->magic));
 }

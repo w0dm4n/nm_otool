@@ -22,7 +22,8 @@ void	read_symtab_x32(void *map, struct symtab_command *symtab, t_file *file)
 	while (i < (int)symtab->nsyms)
 	{
 		add_custom_x32(get_custom_nlist(), \
-			n_list, (map + symtab->stroff + n_list->n_un.n_strx));
+			n_list, (map + symtab->stroff + n_list->n_un.n_strx), \
+			get_symbol_x32(*n_list, map, file));
 		n_list++;
 		i++;
 	}

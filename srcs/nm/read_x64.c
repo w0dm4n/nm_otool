@@ -62,7 +62,14 @@ void	print_customs(t_file *file)
 				print_addr(g_customs->addr, file);
 			else
 				(file->is_x64) ? print_space(16) : print_space(8);
-			print_current_type(g_customs, file);
+			if (g_customs->symbol > 0)
+			{
+				ft_putstr(" ");
+				ft_putchar(g_customs->symbol);
+				ft_putstr(" ");
+			}
+			else
+				print_symbol(g_customs, file);
 			ft_putstr(g_customs->content);
 			ft_putstr("\n");
 		}
@@ -75,12 +82,14 @@ void	read_symtab_x64(void *map, struct symtab_command *symtab, t_file *file)
 	struct nlist_64			*n_list;
 	int						i;
 
+	(void)file;
 	n_list = (struct nlist_64*)(map + symtab->symoff);
 	i = 0;
 	while (i < (int)symtab->nsyms)
 	{
 		add_custom_x64(get_custom_nlist(),\
-			n_list, (map + symtab->stroff + n_list->n_un.n_strx));
+			n_list, (map + symtab->stroff + n_list->n_un.n_strx),\
+			get_symbol_x64(*n_list, map, file));
 		n_list++;
 		i++;
 	}
@@ -102,6 +111,7 @@ void	read_x64(struct mach_header_64 *header, t_file *file)
 	symtab = NULL;
 	while (i < (int)header->ncmds)
 	{
+		segment = (struct segment_command_64*)ptr;
 		cmd = (struct load_command*)ptr;
 		if (cmd->cmd == LC_SYMTAB)
 			read_symtab_x64(get_ptr(file), (struct symtab_command*)ptr, file);

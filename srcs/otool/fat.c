@@ -12,39 +12,18 @@
 
 #include "ft_nm_otool.h"
 
-int		is_fat(uint32_t magic)
+void	text_section_fat(t_file *file, struct section_64 *section, void *ptr)
 {
-	return (magic == FAT_MAGIC || magic == FAT_CIGAM);
-}
+	int		i;
+	int		count;
 
-int		is_universal(t_file *file)
-{
-	struct mach_header	*mach_header;
-
-	if (!(mach_header = (struct mach_header*)ft_mmap(file->fd, \
-		sizeof(struct mach_header))))
-		return (-1);
-	return (is_fat(mach_header->magic));
-}
-
-void	read_universal(void *map, struct symtab_command *symtab, \
-	t_file *file, void *header)
-{
-	struct nlist_64			*n_list;
-	int						i;
-
-	n_list = (struct nlist_64*)\
-	(map + (symtab->symoff - (sizeof(struct nlist_64) * 2)));
 	i = 0;
-	while (i < (int)symtab->nsyms)
-	{
-		add_custom_x64(get_custom_nlist(),\
-			n_list, (header + symtab->stroff + n_list->n_un.n_strx), 0);
-		n_list++;
-		i++;
-	}
-	range_customs_by_ascii();
-	print_customs(file);
+	count = 0;
+	ft_putstr(file->file_name);
+	ft_putstr(":\n");
+	ft_putstr("Contents of (__TEXT,__text) section\n");
+	print_text_section(section->size, get_text_section(section->offset, ptr), \
+		section->addr, file);
 }
 
 void	read_fat_x64(t_file *file, struct mach_header_64 *header, void *ptr)
@@ -53,6 +32,7 @@ void	read_fat_x64(t_file *file, struct mach_header_64 *header, void *ptr)
 	struct load_command			*cmd;
 	struct segment_command_64	*segment;
 	struct symtab_command		*symtab;
+	struct section_64			*section;
 
 	file->is_x64 = TRUE;
 	file->filetype = header->filetype;
@@ -63,9 +43,13 @@ void	read_fat_x64(t_file *file, struct mach_header_64 *header, void *ptr)
 	while (i < (int)header->ncmds)
 	{
 		cmd = (struct load_command*)ptr;
-		if (cmd->cmd == LC_SYMTAB)
-			read_universal((void*)header + sizeof(struct mach_header_64), \
-				(struct symtab_command*)cmd, file, (void*)header);
+		if (cmd->cmd == LC_SEGMENT_64)
+		{
+			segment = (struct segment_command_64*)ptr;
+			section = ptr + sizeof(struct segment_command_64);
+			if (ft_strcmp(section->segname, "__TEXT") == 0)
+				text_section_fat(file, section, header);
+		}
 		ptr += cmd->cmdsize;
 		i++;
 	}

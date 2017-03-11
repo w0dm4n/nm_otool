@@ -35,3 +35,8 @@ void		*ft_mmap(int fd, size_t size)
 	return (mmap(0, size, PROT_READ, \
 		MAP_SHARED, fd, 0));
 }
+
+int			is_magic_64(uint32_t magic)
+{
+	return (magic == MH_MAGIC_64 || magic == MH_CIGAM_64);
+}

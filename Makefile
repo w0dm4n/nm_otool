@@ -6,7 +6,7 @@
 #    By: frmarinh <frmarinh@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/20 17:57:50 by frmarinh          #+#    #+#              #
-#    Updated: 2017/03/10 20:20:23 by frmarinh         ###   ########.fr        #
+#    Updated: 2017/03/11 05:08:55 by frmarinh         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,8 @@ SRCBASE_OTOOL	=	\
 					read_x32.c                              \
 					check_file.c							\
 					do.c									\
-					utils.c
+					utils.c									\
+					fat.c
 
 SRCBASE_NM		=	\
 					ft_nm.c                                 \

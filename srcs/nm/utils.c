@@ -44,8 +44,3 @@ void		print_space(int space)
 		space--;
 	}
 }
-
-int			authorized_type(int type)
-{
-	return (type == 1 || type == 14 || type == 15 || type == 30);
-}

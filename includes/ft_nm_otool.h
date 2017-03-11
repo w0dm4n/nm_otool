@@ -41,6 +41,7 @@ typedef struct			s_custom_nlist
 	struct s_custom_nlist	*next;
 	struct s_custom_nlist	*prev;
 	uint8_t					sect;
+	char					symbol;
 }						t_custom_nlist;
 
 int						check_file(struct s_file *file);
@@ -74,9 +75,9 @@ void					print_addr(int val, t_file *file);
 t_custom_nlist			*get_custom_nlist(void);
 
 void					add_custom_x64(t_custom_nlist *customs, \
-	struct nlist_64 *nlist, char *c);
+	struct nlist_64 *nlist, char *c, char symbol);
 void					add_custom_x32(t_custom_nlist *customs, \
-	struct nlist *nlist, char *c);
+	struct nlist *nlist, char *c, char symbol);
 
 void					range_customs_by_ascii(void);
 void					print_customs(t_file *file);
@@ -93,7 +94,10 @@ int						is_universal(t_file *file);
 void					do_fat(struct s_file *file);
 void					read_fat_x64(t_file *file, \
 	struct mach_header_64 *header, void *ptr);
-void					print_current_type(t_custom_nlist *current, t_file *file);
+char					get_symbol_x64(struct nlist_64 symbol, void *buf, t_file *file);
+char					get_symbol_x32(struct nlist symbol, void *buf, t_file *file);
+void					print_symbol(t_custom_nlist *current, t_file *file);
+void					text_section_x64(t_file *file, struct section_64 *section);
 
 struct s_custom_nlist	*g_customs;
 

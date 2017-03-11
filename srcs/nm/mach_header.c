@@ -32,21 +32,6 @@ int						is_x64(t_file *file)
 	return (is_magic_64(mach_header->magic));
 }
 
-int						is_fat(uint32_t magic)
-{
-	return (magic == FAT_MAGIC || magic == FAT_CIGAM);
-}
-
-int						is_universal(t_file *file)
-{
-	struct mach_header	*mach_header;
-
-	if (!(mach_header = (struct mach_header*)ft_mmap(file->fd, \
-		sizeof(struct mach_header))))
-		return (-1);
-	return (is_fat(mach_header->magic));
-}
-
 struct mach_header_64	*get_x64(t_file *file)
 {
 	struct mach_header_64	*mach_header_64;

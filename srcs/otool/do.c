@@ -53,3 +53,18 @@ void	do_32(struct s_file *file)
 		print_not_object();
 	close_and_free(file);
 }
+
+void	do_fat(struct s_file *file)
+{
+	void					*ptr;
+	struct fat_arch			*arch;
+	struct mach_header_64	*header;
+
+	file->is_fat = TRUE;
+	ptr = get_ptr(file);
+	arch = ptr + sizeof(struct fat_header) + sizeof(struct fat_arch);
+	header = ptr + swap_int32(arch->offset);
+	if (is_magic_64(header->magic))
+		read_fat_x64(file, header, ptr);
+	close_and_free(file);
+}

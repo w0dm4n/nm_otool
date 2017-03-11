@@ -64,7 +64,10 @@ static void		get_content(char *name)
 	}
 	if (!check_file(file))
 		return ;
-	(is_x64(file)) ? do_64(file) : do_32(file);
+	if (is_universal(file))
+		do_fat(file);
+	else
+		(is_x64(file)) ? do_64(file) : do_32(file);
 }
 
 int				main(int argc, char **argv)
@@ -77,8 +80,7 @@ int				main(int argc, char **argv)
 		while (argv[i])
 		{
 			get_content(argv[i++]);
-			if (argc > 2)
-				ft_putstr("\n");
+			ft_putstr("\n");
 		}
 	}
 	else
