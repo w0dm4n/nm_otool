@@ -94,11 +94,20 @@ int						is_universal(t_file *file);
 void					do_fat(struct s_file *file);
 void					read_fat_x64(t_file *file, \
 	struct mach_header_64 *header, void *ptr);
-char					get_symbol_x64(struct nlist_64 symbol, void *buf, t_file *file);
-char					get_symbol_x32(struct nlist symbol, void *buf, t_file *file);
+char					get_symbol_x64(struct nlist_64 symbol, \
+	void *buf, t_file *file);
+char					get_symbol_x32(struct nlist symbol, \
+	void *buf, t_file *file);
 void					print_symbol(t_custom_nlist *current, t_file *file);
-void					text_section_x64(t_file *file, struct section_64 *section);
+void					text_section_x64(t_file *file, \
+	struct section_64 *section);
 
 struct s_custom_nlist	*g_customs;
+
+# define FIND_OBJ_X64 st_find_char_obj(segment, symbol.n_sect - n - 1)
+# define FIND_ALL_X64 st_find_char(segment, symbol.n_sect - n - 1)
+
+# define FIND_OBJ_X32 st_find_char_x32_obj(segment, symbol.n_sect - n - 1)
+# define FIND_ALL_X32 st_find_char_x32(segment, symbol.n_sect - n - 1)
 
 #endif

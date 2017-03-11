@@ -53,6 +53,8 @@ SRCBASE_NM		=	\
 					utils.c									\
 					custom_nlist.c							\
 					fat.c									\
+					symbol_x32.c							\
+					symbol_x64.c							\
 					type.c
 
 INCS		=	$(addprefix $(INCDIR), $(INCBASE))

@@ -82,7 +82,6 @@ void	read_symtab_x64(void *map, struct symtab_command *symtab, t_file *file)
 	struct nlist_64			*n_list;
 	int						i;
 
-	(void)file;
 	n_list = (struct nlist_64*)(map + symtab->symoff);
 	i = 0;
 	while (i < (int)symtab->nsyms)

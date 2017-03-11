@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "ft_nm_otool.h"
-#include <stdio.h>
 
 t_custom_nlist		*get_custom_nlist(void)
 {
