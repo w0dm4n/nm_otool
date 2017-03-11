@@ -109,6 +109,7 @@ void					print_extern(t_file *file);
 int						count_file(char **argv);
 void					print_help(void);
 void					print_mach_header(t_file *file);
+void					print_is_universal(t_file *file);
 
 struct s_custom_nlist	*g_customs;
 
@@ -119,6 +120,6 @@ struct s_custom_nlist	*g_customs;
 # define FIND_ALL_X32 st_find_char_x32(segment, symbol.n_sect - n - 1)
 
 # define NM_FLAGS "urhj"
-# define OTOOL_FLAGS "ahm"
+# define OTOOL_FLAGS "ahmf"
 
 #endif

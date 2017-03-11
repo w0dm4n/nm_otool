@@ -70,6 +70,11 @@ static void		get_content(char *name, char *flags)
 		print_mach_header(file);
 		return ;
 	}
+	if (has_flags('f', flags))
+	{
+		print_is_universal(file);
+		return ;
+	}
 	if (is_universal(file))
 		do_fat(file);
 	else

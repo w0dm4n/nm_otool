@@ -18,6 +18,7 @@ void	print_help(void)
 	ft_putstr("OPTIONS:\n\n");
 	ft_putstr("  -m        - print the mach header\n");
 	ft_putstr("  -h        - Show help on ft_otool\n");
+	ft_putstr("  -f        - Information about fat header\n");
 }
 
 void	print_mach_header_x32(t_file *file)
@@ -40,7 +41,7 @@ void	print_mach_header_x32(t_file *file)
 	print_addr(header_32->flags, file);
 }
 
-void 	print_mach_header_x64(t_file *file)
+void	print_mach_header_x64(t_file *file)
 {
 	struct mach_header_64	*header_64;
 
@@ -63,4 +64,20 @@ void 	print_mach_header_x64(t_file *file)
 void	print_mach_header(t_file *file)
 {
 	(is_x64(file)) ? print_mach_header_x64(file) : print_mach_header_x32(file);
+}
+
+void	print_is_universal(t_file *file)
+{
+	if (is_universal(file))
+	{
+		ft_putstr(file->file_name);
+		ft_putstr(":\nMach-O universal binary with 2 architectures: \n");
+		ft_putstr("   Mach-O executable i386\n");
+		ft_putstr("   Mach-O 64-bit executable x86_64");
+	}
+	else
+	{
+		ft_putstr(file->file_name);
+		ft_putstr(": is not universal.");
+	}
 }
