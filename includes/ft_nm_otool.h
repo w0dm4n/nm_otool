@@ -110,6 +110,7 @@ int						count_file(char **argv);
 void					print_help(void);
 void					print_mach_header(t_file *file);
 void					print_is_universal(t_file *file);
+void					print_fat_mach_header(t_file *file);
 
 struct s_custom_nlist	*g_customs;
 

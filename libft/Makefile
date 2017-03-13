@@ -6,7 +6,7 @@
 #    By: frmarinh <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/23 12:48:21 by frmarinh          #+#    #+#              #
-#    Updated: 2017/03/11 07:49:38 by frmarinh         ###   ########.fr        #
+#    Updated: 2017/03/11 12:54:18 by frmarinh         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ FLAGS = -Wall -Wextra -Werror
 all: $(NAME)
 
 $(NAME):
-	@gcc -c $(SRCS) $(FLAGS) -I includes/
+	@gcc -c $(SRCS) $(FLAGS) -I includes/ -m32
 	@ar rc $(NAME) $(O_FILE)
 	@ranlib $(NAME)
 

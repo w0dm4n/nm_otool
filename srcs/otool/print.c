@@ -61,9 +61,12 @@ void	print_mach_header_x64(t_file *file)
 	print_addr(header_64->flags, file);
 }
 
-void	print_mach_header(t_file *file)
+void	print_mach_header(t_file *f)
 {
-	(is_x64(file)) ? print_mach_header_x64(file) : print_mach_header_x32(file);
+	if (is_universal(f))
+		print_fat_mach_header(f);
+	else
+		(is_x64(f)) ? print_mach_header_x64(f) : print_mach_header_x32(f);
 }
 
 void	print_is_universal(t_file *file)

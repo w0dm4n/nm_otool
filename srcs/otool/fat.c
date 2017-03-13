@@ -26,6 +26,31 @@ void	text_section_fat(t_file *file, struct section_64 *section, void *ptr)
 		section->addr, file);
 }
 
+void	print_fat_mach_header(t_file *file)
+{
+	void					*ptr;
+	struct fat_arch			*arch;
+	struct mach_header_64	*header;
+
+	file->is_fat = TRUE;
+	ptr = get_ptr(file);
+	arch = ptr + sizeof(struct fat_header) + sizeof(struct fat_arch);
+	header = ptr + swap_int32(arch->offset);
+	ft_putstr("Mach header\n      ");
+	ft_putstr("magic cputype cpusubtype  caps    filetype");
+	ft_putstr(" ncmds sizeofcmds      flags\n");
+	ft_putstr(" 0xfeedfacf ");
+	ft_putnbr(header->cputype);
+	ft_putstr("          3  0x80          ");
+	ft_putnbr(header->filetype);
+	ft_putstr("     ");
+	ft_putnbr(header->ncmds);
+	ft_putstr("       ");
+	ft_putnbr(header->sizeofcmds);
+	ft_putstr(" 0x");
+	print_addr(header->flags, file);
+}
+
 void	read_fat_x64(t_file *file, struct mach_header_64 *header, void *ptr)
 {
 	int							i;
