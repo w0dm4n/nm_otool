@@ -72,6 +72,8 @@ void				do_fat(struct s_file *file)
 		if ((header_64->filetype < 3 && header_64->filetype > 0) \
 		|| header_64->filetype == 6)
 			read_fat_x64(file, header_64, ptr);
+		else
+			print_not_object();
 	}
 	else
 		do_fat_32(NULL, ptr, file, fat);

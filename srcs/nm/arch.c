@@ -81,5 +81,7 @@ void				do_fat_32(struct mach_header *header_32, \
 			swap_int32(header_32->filetype) > 0) \
 			|| (swap_int32(header_32->filetype) == 6))
 			read_fat_x32(file, header_32, ptr);
+		else
+			print_not_object();
 	}
 }
