@@ -6,7 +6,7 @@
 #    By: frmarinh <frmarinh@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/20 17:57:50 by frmarinh          #+#    #+#              #
-#    Updated: 2017/03/11 12:54:12 by frmarinh         ###   ########.fr        #
+#    Updated: 2017/03/14 16:49:10 by frmarinh         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ NAMEBASE    =   $(shell basename $(NAME))
 LENGTHNAME	=	`printf "%s" $(NAMEBASE) | wc -c`
 MAX_COLS	=	$$(echo "$$(tput cols)-24-$(LENGTHNAME)"|bc)
 
-CC			=	gcc -m32
+CC			=	gcc
 FLAGS		=	-Wall -Wextra -Werror -O3
 FLAGS_O		=	
 
@@ -59,7 +59,8 @@ SRCBASE_NM		=	\
 					symbol_x64.c							\
 					type.c									\
 					flags.c									\
-					print.c
+					print.c									\
+					arch.c
 
 INCS		=	$(addprefix $(INCDIR), $(INCBASE))
 

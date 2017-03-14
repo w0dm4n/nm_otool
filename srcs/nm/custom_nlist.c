@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "ft_nm_otool.h"
+#include <stdio.h>
 
 t_custom_nlist		*get_custom_nlist(void)
 {
@@ -70,7 +71,7 @@ void				add_custom_x32(t_custom_nlist *customs,\
 		return ;
 	new->content = c;
 	new->type = nlist->n_type;
-	new->addr = nlist->n_value;
+	new->addr = (symbol == -1) ? swap_int32(nlist->n_value) : nlist->n_value;
 	new->next = NULL;
 	new->prev = NULL;
 	new->symbol = symbol;

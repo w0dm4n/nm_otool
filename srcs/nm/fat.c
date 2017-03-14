@@ -12,11 +12,6 @@
 
 #include "ft_nm_otool.h"
 
-int		is_fat(uint32_t magic)
-{
-	return (magic == FAT_MAGIC || magic == FAT_CIGAM);
-}
-
 int		is_universal(t_file *file)
 {
 	struct mach_header	*mach_header;
@@ -47,6 +42,27 @@ void	read_universal(void *map, struct symtab_command *symtab, \
 	print_customs(file);
 }
 
+void	read_universal_x32(struct symtab_command *symtab, \
+	t_file *file, void *header)
+{
+	struct nlist			*n_list;
+	int						i;
+
+	n_list = (struct nlist*)\
+	(header + ((swap_int32(symtab->symoff) - (sizeof(struct nlist) * 2))));
+	i = 0;
+	while (i < (int)swap_int32(symtab->nsyms))
+	{
+		add_custom_x32(get_custom_nlist(),\
+			n_list, (header + swap_int32(symtab->stroff) \
+				+ swap_int32(n_list->n_un.n_strx)), -1);
+		n_list++;
+		i++;
+	}
+	range_customs_by_ascii();
+	print_customs(file);
+}
+
 void	read_fat_x64(t_file *file, struct mach_header_64 *header, void *ptr)
 {
 	int							i;
@@ -67,6 +83,30 @@ void	read_fat_x64(t_file *file, struct mach_header_64 *header, void *ptr)
 			read_universal((void*)header + sizeof(struct mach_header_64), \
 				(struct symtab_command*)cmd, file, (void*)header);
 		ptr += cmd->cmdsize;
+		i++;
+	}
+}
+
+void	read_fat_x32(t_file *file, struct mach_header *header, void *ptr)
+{
+	int							i;
+	struct load_command			*cmd;
+	struct segment_command_64	*segment;
+	struct symtab_command		*symtab;
+
+	file->is_x64 = FALSE;
+	file->filetype = swap_int32(header->filetype);
+	ptr = (void*)header + sizeof(struct mach_header);
+	i = 0;
+	segment = NULL;
+	symtab = NULL;
+	while (i < (int)swap_int32(header->ncmds))
+	{
+		cmd = (struct load_command*)ptr;
+		if (cmd->cmd == swap_int32(LC_SYMTAB))
+			read_universal_x32((struct symtab_command*)cmd, file, \
+				(void*)header);
+		ptr += swap_int32(cmd->cmdsize);
 		i++;
 	}
 }

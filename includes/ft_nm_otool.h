@@ -95,6 +95,8 @@ int						is_universal(t_file *file);
 void					do_fat(struct s_file *file);
 void					read_fat_x64(t_file *file, \
 	struct mach_header_64 *header, void *ptr);
+void					read_fat_x32(t_file *file, \
+	struct mach_header *header, void *ptr);
 char					get_symbol_x64(struct nlist_64 symbol, \
 	void *buf, t_file *file);
 char					get_symbol_x32(struct nlist symbol, \
@@ -111,6 +113,10 @@ void					print_help(void);
 void					print_mach_header(t_file *file);
 void					print_is_universal(t_file *file);
 void					print_fat_mach_header(t_file *file);
+struct fat_arch			*get_arch_x64(int arch_count, void *first, void *ptr);
+struct fat_arch			*get_arch_x32(int arch_count, void *first, void *ptr);
+void					do_fat_32(struct mach_header *header_32, \
+	void *ptr, t_file *file, struct fat_header *fat);
 
 struct s_custom_nlist	*g_customs;
 

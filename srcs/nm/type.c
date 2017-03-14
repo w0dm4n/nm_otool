@@ -43,6 +43,7 @@ void		print_symbol(t_custom_nlist *current, t_file *file)
 		ft_putstr(" t ");
 	else if ((int)current->sect == 1 && current->type == 15)
 		ft_putstr(" T ");
-	else if ((int)current->sect == 12 && current->type == 15)
+	else if (((int)current->sect == 12 && current->type == 15) ||
+		((int)current->sect == 7 && current->type == 15))
 		ft_putstr(" D ");
 }
